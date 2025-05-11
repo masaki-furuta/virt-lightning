@@ -181,7 +181,6 @@ its configuration there.
 [main]
 network_name = virt-lightning
 root_password = root
-storage_dir = /var/lib/virt-lightning/pool
 storage_pool = virt-lightning
 network_auto_clean_up = True
 ssh_key_file = ~/.ssh/id_rsa.pub

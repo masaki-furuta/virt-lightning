@@ -15,6 +15,7 @@ DEFAULT_CONFIGURATION = {
         "network_auto_clean_up": True,
         "ssh_key_file": "~/.ssh/id_rsa.pub",
         "private_hub": "",
+        "storage_dir": "/var/lib/virt-lightning/pool"
     }
 }
 
@@ -46,6 +47,10 @@ class AbstractConfiguration(metaclass=ABCMeta):
 
     @abstractproperty
     def storage_pool(self):
+        pass
+
+    @abstractproperty
+    def storage_dir(self):
         pass
 
     def __repr__(self):
@@ -91,6 +96,10 @@ class Configuration(AbstractConfiguration):
     @property
     def storage_pool(self):
         return self.__get("storage_pool")
+
+    @property
+    def storage_dir(self):
+        return self.__get("storage_dir")
 
     @property
     def private_hub(self):

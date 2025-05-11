@@ -19,6 +19,7 @@ import xml.etree.ElementTree as ET  # noqa: N817
 import libvirt
 import yaml
 
+from virt_lightning.configuration import Configuration
 from virt_lightning.symbols import get_symbols
 
 from .templates import (
@@ -34,7 +35,6 @@ from .templates import (
     USER_CREATE_STORAGE_POOL_DIR,
 )
 
-DEFAULT_STORAGE_DIR = "/var/lib/virt-lightning/pool"
 QEMU_DIR = "/var/lib/libvirt/qemu/"
 KVM_BINARIES = (
     "/usr/bin/qemu-system-x86_64",
@@ -606,7 +606,9 @@ class LibvirtHypervisor:
             if e.get_error_code() != libvirt.VIR_ERR_NO_STORAGE_POOL:
                 raise (e)
 
-        storage_dir = pathlib.PosixPath(DEFAULT_STORAGE_DIR)
+        conf = Configuration()
+        storage_dir = pathlib.PosixPath(conf.storage_dir)
+
         if not self.storage_pool_obj:
             self.storage_pool_obj = self.create_storage_pool(
                 name=storage_pool, directory=storage_dir
