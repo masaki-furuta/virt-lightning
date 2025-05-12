@@ -104,6 +104,7 @@ install_virt_lightning() {
 
     if ! pipx list | grep -q virt-lightning; then
         echo "Installing virt-lightning via pipx..."
+        pipx install virt-lightning
         # パッチ版を追加する場合はこちら
         # pipx install git+https://github.com/masaki-furuta/virt-lightning.git
     fi
