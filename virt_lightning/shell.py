@@ -8,6 +8,7 @@ import sys
 
 import libvirt
 import yaml
+import requests
 
 import virt_lightning.api
 import virt_lightning.ui as ui
@@ -247,6 +248,11 @@ Commands:
         parents=[parent_parser],
     )
     action_subparsers.add_parser(
+        "remote_distro_list",
+        help="List all the images from upstream GitHub images.json",
+        parents=[parent_parser],
+    )
+    action_subparsers.add_parser(
         "storage_dir", help="Print the storage directory", parents=[parent_parser]
     )
 
@@ -306,6 +312,17 @@ Commands:
                 configuration=configuration, **vars(args)
             )
         )
+    elif args.action == "remote_distro_list":
+        url = "https://raw.githubusercontent.com/virt-lightning/virt-lightning/refs/heads/main/virt-lightning.org/images.json"
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            images = response.json()
+            for image in images:
+                print(image["name"])  # noqa: T001
+        except Exception as e:
+            print(f"Failed to fetch remote distro list: {e}")  # noqa: T001
+            exit(1)
     elif args.action == "ssh_config":
         print(  # noqa: T001
             virt_lightning.api.ssh_config(configuration=configuration, **vars(args))
