@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# setup-virt-lightning-user.sh - User local quick installer for virt-lightning
+# setup-virt-lightning-user.sh - user local quick installer for virt-lightning
 #
 # This helper script prepares virt-lightning in user-space (~/.local/share/virt-lightning/)
 # without modifying system-wide libvirt settings.
@@ -14,6 +14,31 @@
 #
 # Usage:
 #   bash contrib/setup-virt-lightning-user.sh
+#
+# Optional Uninstall:
+#   sudo apt purge -y libvirt-daemon libvirt-clients libvirt-dev libvirt-daemon-system qemu-kvm virtinst python3-venv pipx
+#   sudo apt autoremove -y
+#   sudo rm -rfv /var/lib/libvirt /etc/libvirt /var/run/libvirt ~/.config/virt-lightning ~/.config/libvirt ~/.local/share/virt-lightning
+#   sudo ip link delete virt-lightning type bridge
+#   sudo pkill dnsmasq
+#   for m in $(machinectl list --no-legend | awk '{print $1}' | grep virt-lightning); do sudo machinectl terminate $m; done
+#
+# Manual permission setup (if needed):
+#   mkdir -pv ~/.local/share/virt-lightning/pool/upstream
+#   sudo chown -Rv libvirt-qemu:kvm ~/.local/share/virt-lightning/pool
+#   sudo chown -Rv $USER ~/.local/share/virt-lightning/pool/upstream
+#   sudo chmod -v 775 ~/.local/share/virt-lightning ~/.local/share/virt-lightning/pool ~/.local/share/virt-lightning/pool/upstream
+#   sudo chown -v libvirt-qemu:kvm ~/.local/share/virt-lightning/pool/*.qcow2
+#   sudo chmod -v 660 ~/.local/share/virt-lightning/pool/*.qcow2
+#
+# Permission check example:
+#   sudo su - libvirt-qemu -s /bin/bash -c "ls -l ~/.local/share/virt-lightning/pool/*.qcow2; echo; ls -l ~/.local/share/virt-lightning/pool/upstream/*.qcow2"
+#
+set -e
+#
+#
+#
+#
 
 set -e
 
