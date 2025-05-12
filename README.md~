@@ -363,15 +363,3 @@ running test will require:
 ```shell
 pip3 install -r test-requirements.txt
 ```
-### User local quick setup (non-root user)
-
-You can use the optional helper script to easily set up virt-lightning in user-space
-(e.g. under `~/.local/share/virt-lightning/`).
-
-This is useful if you want to isolate the storage and configuration without touching the system-wide `/var/lib/libvirt/`.
-
-```shell
-curl -LO https://raw.githubusercontent.com/masaki-furuta/virt-lightning/main/setup-virt-lightning-user.sh
-chmod +x setup-virt-lightning-user.sh
-./setup-virt-lightning-user.sh
-```
