@@ -375,3 +375,11 @@ curl -LO https://raw.githubusercontent.com/masaki-furuta/virt-lightning/main/set
 chmod +x setup-virt-lightning-user.sh
 ./setup-virt-lightning-user.sh
 ```
+## Additional (Optional) step for custom `vl remote_distro_list` feature
+
+If you want to use the custom `vl remote_distro_list` command (which queries online images list),
+you must inject `requests` library into pipx virt-lightning venv:
+
+```shell
+pipx inject virt-lightning requests
+```

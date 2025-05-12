@@ -34,11 +34,6 @@
 # Permission check example:
 #   sudo su - libvirt-qemu -s /bin/bash -c "ls -l ~/.local/share/virt-lightning/pool/*.qcow2; echo; ls -l ~/.local/share/virt-lightning/pool/upstream/*.qcow2"
 #
-set -e
-#
-#
-#
-#
 
 set -e
 
@@ -109,9 +104,13 @@ install_virt_lightning() {
 
     if ! pipx list | grep -q virt-lightning; then
         echo "Installing virt-lightning via pipx..."
-        pipx install virt-lightning
+        # パッチ版を追加する場合はこちら
         # pipx install git+https://github.com/masaki-furuta/virt-lightning.git
     fi
+
+    # ✅ custom vl remote_distro_list 対応
+    echo "Injecting requests library for custom remote_distro_list..."
+    pipx inject virt-lightning requests || true
 }
 
 # -------------------------------
