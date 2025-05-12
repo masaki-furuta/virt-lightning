@@ -18,6 +18,8 @@ from virt_lightning.configuration import Configuration
 from virt_lightning.symbols import get_symbols
 from virt_lightning.util import strtobool
 
+import subprocess
+
 BASE_URL = "https://virt-lightning.org"
 
 logger = logging.getLogger("virt_lightning")
@@ -293,6 +295,17 @@ def stop(configuration, **kwargs):
             logger.info("No running VM.")
         raise VMNotFoundError(kwargs["name"])
     hv.clean_up(domain)
+
+    # ✅ PATCH: machinectl cleanup (match any qemu-*-<name>)
+    try:
+        output = subprocess.check_output(["machinectl", "list", "--no-legend"], text=True)
+        lines = output.strip().split("\n")
+        for line in lines:
+            fields = line.split()
+            if len(fields) > 0 and fields[0].startswith("qemu-") and fields[0].endswith(f"-{kwargs['name']}"):
+                subprocess.run(["sudo", "machinectl", "terminate", fields[0]], check=True)
+    except Exception as e:
+        print(f"[WARN] machinectl cleanup failed: {e}")
 
 
 def ansible_inventory(configuration, context="default", **kwargs):
